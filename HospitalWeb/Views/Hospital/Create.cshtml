@@ -1,0 +1,32 @@
+﻿@model HospitalWeb.ViewModels.Hospital.HospitalCreateViewModel
+<h1>Add hospital</h1>​
+<form asp-action="Create" method="post">
+    <label>Name:</label>​
+    <input asp-for="Name"/>
+    <span asp-validation-for="Name"></span>
+    <br />​
+    <br />​
+    <label>Address</label>​
+    <input asp-for="Address"/>
+    <span asp-validation-for="Address"></span>
+    <br />​
+    <br />​
+    <label>Email:</label>​
+    <input asp-for="Email"/>
+    <span asp-validation-for="Email"></span>
+    <br />​
+    <br />​
+    <label>Phone number:</label>​
+    <input asp-for="PhoneNumber"/>
+    <span asp-validation-for="PhoneNumber"></span>
+    <br />​
+    <br />​
+    <label>Beds count:</label>​
+    <input asp-for="BedsCount"/>
+    <span asp-validation-for="BedsCount"></span>
+    <br />​
+    <br />​
+    <button type="submit">Save</button>​
+</form>​
+    <br />​
+    <a asp-action="Index">Back to index</a>
