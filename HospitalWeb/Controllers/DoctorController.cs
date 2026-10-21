@@ -5,24 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HospitalWeb.ViewModels.Doctor;
 using System.Runtime.Intrinsics.Arm;
+using Hospital_Library.Interfaces;
+using Hospital_ManagerCore.Interfaces;
+using Hospital_Library.Services;
 
 namespace HospitalWeb.Controllers
 {
     public class DoctorController:Controller
     {
-        private readonly HospitalDbContext context;
+        private readonly IHospitalService _hospitalServices;
+        private readonly IDoctorService _doctorService;
 
-        public DoctorController(HospitalDbContext context)
+        public DoctorController(IHospitalService hospitalService,IDoctorService doctorService)
         {
-            this.context = context;
+            _hospitalServices = hospitalService;
+            _doctorService = doctorService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var doctors = await context.Doctors
-                .Include(d => d.Hospital)
-                .ToListAsync();
-
+            var doctors = await _doctorService.GetAllDoctorsAync();
             var model = new List<DoctorIndexViewModel>();
 
             foreach (var doctor in doctors)
@@ -42,11 +44,7 @@ namespace HospitalWeb.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var doctor = await context.Doctors
-                .Include(d => d.Hospital)
-                .Include(d=>d.Patients)
-                .ThenInclude(dp => dp.Patient)
-                .FirstOrDefaultAsync(d => d.Id == id);
+            var doctor = await _doctorService.GetDoctorDetailsAsync(id);
 
             if (doctor == null)
             {
@@ -69,15 +67,15 @@ namespace HospitalWeb.Controllers
             return View(model);
         }
 
+        private async Task LoadHospitals(int? selectedHospitalId = null)
+        {
+            var hospitals = await _hospitalServices.GetAllHospitals();
+            ViewBag.Hospitals = new SelectList(hospitals, "Id", "Name", selectedHospitalId);
+        }
+
         public async Task<IActionResult> Create()
         {
-            ViewBag.Hospitals = new SelectList(
-            await context.Hospitals
-         .Where(h => !h.IsDeleted)
-         .ToListAsync(),
-             "Id",
-            "Name");
-
+            await LoadHospitals();
             return View();
         }
 
@@ -96,24 +94,17 @@ namespace HospitalWeb.Controllers
                     HospitalId = model.HospitalId
                 };
 
-                context.Doctors.Add(doctor);
-                await context.SaveChangesAsync();
-
+                await _doctorService.AddDoctorAsync(doctor);
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Hospitals = new SelectList(
-    await context.Hospitals
-        .Where(h => !h.IsDeleted)
-        .ToListAsync(),
-    "Id",
-    "Name");
 
+            await LoadHospitals(model.HospitalId);
             return View(model);
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var doctor = await context.Doctors.FindAsync(id);
+            var doctor = await _doctorService.GetDoctorByIdAsync(id);
 
             if (doctor == null)
             {
@@ -131,13 +122,8 @@ namespace HospitalWeb.Controllers
                 HospitalId = doctor.HospitalId
             };
 
-            ViewBag.Hospitals = new SelectList(
-                    await context.Hospitals
-                        .Where(h => !h.IsDeleted)
-                        .ToListAsync(),
-                    "Id",
-                    "Name");
 
+            await LoadHospitals(model.HospitalId);
             return View(model);
         }
 
@@ -151,7 +137,7 @@ namespace HospitalWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                var doctor = await context.Doctors.FindAsync(id);
+                var doctor = await _doctorService.GetDoctorByIdAsync(id);
 
                 if (doctor == null)
                 {
@@ -165,24 +151,17 @@ namespace HospitalWeb.Controllers
                 doctor.PhoneNumber = model.PhoneNumber;
                 doctor.HospitalId = model.HospitalId;
 
-                await context.SaveChangesAsync();
-
+                await _doctorService.UpdateDoctorAsync(doctor);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Hospitals = new SelectList(
-                  await context.Hospitals
-                      .Where(h => !h.IsDeleted)
-                      .ToListAsync(),
-                  "Id",
-                  "Name");
-
+            await LoadHospitals(model.HospitalId);
             return View(model);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var doctor = await context.Doctors.FindAsync(id);
+            var doctor = await _doctorService.GetDoctorByIdAsync(id);
 
             if (doctor == null)
             {
@@ -203,14 +182,7 @@ namespace HospitalWeb.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var doctor = await context.Doctors.FindAsync(id);
-
-            if (doctor != null)
-            {
-                context.Doctors.Remove(doctor);
-                await context.SaveChangesAsync();
-            }
-
+            await _doctorService.DeleteDoctorAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
