@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HospitalWeb.ViewModels.Doctor;
-using System.Runtime.Intrinsics.Arm;
 using Hospital_Library.Interfaces;
 using Hospital_ManagerCore.Interfaces;
 using Hospital_Library.Services;

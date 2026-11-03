@@ -24,6 +24,6 @@ namespace Data_Hospital.Entities
         [Phone]
         public string PhoneNumber { get; set; }
         public ICollection<DoctorPatient> Doctors { get; set; } = new List<DoctorPatient>();
-        public object DoctorPatients { get; set; }
+        //public object DoctorPatients { get; set; }
     }
 }

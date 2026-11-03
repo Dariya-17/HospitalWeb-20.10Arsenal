@@ -146,12 +146,12 @@ namespace HospitalWeb.Controllers
             }
             [HttpPost]
             [ActionName("Delete")]
-            public async Task<IActionResult> DeleteConfirmed(int id)
-            {
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
 
-                _hospitalServices.DeleteHospitalAsync(id);
-                return RedirectToAction(nameof(Index));
-            }
+            await _hospitalServices.DeleteHospitalAsync(id);
+            return RedirectToAction(nameof(Index));
         }
+    }
     }
 

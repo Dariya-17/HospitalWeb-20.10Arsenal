@@ -25,7 +25,7 @@ namespace Hospital_ManagerCore.Services
 
         public async Task DeletePatientAsync(int id)
         {
-           var patient = await _context.Patients.Include(d => d.Doctors).FirstOrDefaultAsync(d => d.Id == id);
+            var patient = await _context.Patients.Include(d => d.Doctors).FirstOrDefaultAsync(d => d.Id == id);
             if (patient != null)
             {
                 _context.DoctorPatients.RemoveRange(patient.Doctors);
@@ -36,8 +36,8 @@ namespace Hospital_ManagerCore.Services
 
         public async Task<List<Patient>> GetAllPatientsAsync()
         {
-          return await _context.Patients.Include(d=>d.Doctors)
-                .ThenInclude(dp => dp.Doctor).ToListAsync();
+            return await _context.Patients.Include(d => d.Doctors)
+                  .ThenInclude(dp => dp.Doctor).ToListAsync();
         }
 
         public async Task<Patient?> GetPatientByIdAsync(int id)
@@ -46,19 +46,14 @@ namespace Hospital_ManagerCore.Services
                 .FindAsync(id);
         }
 
-        public async Task UpdatePatientAsync(Patient patient,List<int>doctorsId)
+        public async Task UpdatePatientAsync(Patient patient, List<int> doctorsId)
         {
             patient.Doctors.Clear();
-            foreach(var doctorId in doctorsId.Distinct())
+            foreach (var doctorId in doctorsId.Distinct())
             {
                 patient.Doctors.Add(new DoctorPatient { DoctorId = doctorId, PatientId = patient.Id });
             }
             await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdatePatientAsync(Patient patient)
-        {
-            throw new NotImplementedException();
         }
         public async Task<Patient?> GetPatientWithDoctorAsync(int id)
         {

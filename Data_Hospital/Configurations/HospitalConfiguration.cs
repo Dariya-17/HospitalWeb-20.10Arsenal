@@ -35,8 +35,20 @@ namespace Data_Hospital.Configurations
                     BedsCount = 150,
                     CreatedOn = new DateTime(2026, 1 , 1),
                     IsDeleted = false
-                }
+                },
+                 new Hospital
+                 {
+                     Id = 3,
+                     Name = "MBAL Plovdiv",
+                     Address = "Plovdiv",
+                     Email = "plovdivhospital@email.com",
+                     PhoneNumber = "032-555-1234",
+                     BedsCount = 200,
+                     CreatedOn = new DateTime(2025, 3, 15),
+                     IsDeleted = false
+                 }
             );
+           
         }
     }
 }
