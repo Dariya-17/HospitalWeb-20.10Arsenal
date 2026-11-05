@@ -17,12 +17,35 @@ namespace Hospital_Library.Services
         {
             context_new=context;
         }
-        public async Task<List<Hospital>> GetAllHospitals()
+        public async Task<List<Hospital>> GetAllHospitals(string ?search,int? minBeds,string ?sortOrder)
         {
-            return await
-                context_new.Hospitals
-                .Where(h=>!h.IsDeleted)
-                .ToListAsync();
+            var query = context_new.Hospitals
+                 .Where(h => !h.IsDeleted);
+                
+            if(!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(h => h.Name.Contains(search));
+            }
+            if(minBeds.HasValue)
+            {
+                query = query.Where(h => h.BedsCount >= minBeds.Value);
+            }
+         switch(sortOrder)
+            {
+                case "name":
+                    query = query.OrderBy(h => h.Name);
+                    break;
+                case "beds_asc":
+                    query = query.OrderBy(h => h.BedsCount);
+                    break;
+                case "beds_desc":
+                    query = query.OrderByDescending(h => h.BedsCount);
+                    break;
+                default:
+                    query = query.OrderBy(h => h.Name);
+                    break;
+            }
+            return await query.ToListAsync();
         }
         public async  Task<Hospital?> GetHospitalById(int id)
         {
@@ -52,5 +75,7 @@ namespace Hospital_Library.Services
                await context_new.SaveChangesAsync();
             }         
         }
+
+        
     }
 }

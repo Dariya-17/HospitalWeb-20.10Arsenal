@@ -7,6 +7,42 @@
     <a asp-action="Create">Create New</a>
     <a asp-controller="Doctor" asp-action="Index">Show all doctors</a>
 </p>
+@*Formata za tursene*@
+<form asp-controller="Hospital" asp-action="Index" method="get">
+   
+    <div class="col-md-4">
+        <label class="form-label">Hospital Name</label>
+        <input type="text"
+                class="form-control"
+                name="search"
+               value="@ViewBag.Search" 
+                placeholder="Search by name..."/>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Minimum Beds</label>
+        <input type="number"
+               name="minBeds"
+               value="@ViewBag.minBeds"
+               min="0"
+               class="form-control" />
+              
+    </div>
+  <div class="col-md-3">
+      <label class="form-label">Sort by</label>
+      <select name="sortOrder" class="form-control">
+          <optin value="name"
+              selected="@ViewBag.SortOrder=="name")">
+              Name A-Z
+                <optin value="name"
+                       selected="@ViewBag.SortOrder==" name")">
+                    Name A-Z
+                    <optin value="name"
+                           selected="@ViewBag.SortOrder==" name")">
+                        Name A-Z
+          </optin>
+      </select>
+  </div>
+    </form>
 <table class="table">
     <thead>
         <tr>

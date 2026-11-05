@@ -9,7 +9,7 @@ namespace Hospital_Library.Interfaces
 {
    public interface IHospitalService
     {
-        Task<List<Hospital>> GetAllHospitals();
+        Task<List<Hospital>> GetAllHospitals(string?search=null,int? minBeds=null,string ?sortOrder=null);
         Task<Hospital?> GetHospitalById(int id);
         Task AddHospitalAsync(Hospital hospital);
         Task UpdateHospitalAsync(Hospital hospital);
