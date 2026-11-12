@@ -9,7 +9,8 @@ namespace Hospital_ManagerCore.Interfaces
 {
     public interface IDoctorService
     {
-        Task<List<Doctor>> GetAllDoctorsAync();
+        Task<List<Doctor>> GetAllDoctorsAync(string?search=null,
+            string?speciality=null,string?sortOrder=null);
         Task<Doctor?> GetDoctorByIdAsync(int id);
         Task<Doctor?> GetDoctorDetailsAsync(int id);
         Task AddDoctorAsync(Doctor doctor);
