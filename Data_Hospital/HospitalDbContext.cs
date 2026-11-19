@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data_Hospital
+namespace Data_Hospital 
 {
     public class HospitalDbContext:DbContext
     {
@@ -23,22 +23,6 @@ namespace Data_Hospital
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<DoctorPatient>()
-                .HasKey(dp => new { dp.DoctorId, dp.PatientId });
-
-            modelBuilder.Entity<DoctorPatient>()
-                .HasOne(dp => dp.Doctor)
-                .WithMany(d => d.Patients)
-                .HasForeignKey(dp => dp.DoctorId)
-                .OnDelete(DeleteBehavior.Cascade);//za da se iztriqt zapisite v i dvete tablici
-
-            modelBuilder.Entity<DoctorPatient>()
-                .HasOne(dp => dp.Patient)
-                .WithMany(p => p.Doctors)
-                .HasForeignKey(dp => dp.PatientId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.ApplyConfiguration(new HospitalConfiguration());
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());

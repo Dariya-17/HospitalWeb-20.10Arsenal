@@ -13,6 +13,24 @@ namespace Data_Hospital.Configurations
     {
         public void Configure(EntityTypeBuilder<Hospital> builder)
         {
+            builder.Property(h => h.Name)//Konfigurirame imeto na bolnicata da e zaduljitelno
+                                         //i da ima maksimalna duljina ot 100 simvola;
+                                         //kakto v DbContext-a;ogranicheniqta za duljinata na imeto na bolnicata
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(h => h.Address)
+                .IsRequired();
+
+            builder.Property(h => h.Email)
+                .IsRequired();
+
+            builder.Property(h => h.PhoneNumber)
+                .IsRequired();
+
+            builder.Property(h => h.BedsCount)
+                .IsRequired();
+
             builder.HasData(
                 new Hospital
                 {

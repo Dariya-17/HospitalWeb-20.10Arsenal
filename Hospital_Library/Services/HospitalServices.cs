@@ -69,11 +69,18 @@ namespace Hospital_Library.Services
         public async Task DeleteHospitalAsync(int id)
         {
            var hospital = context_new.Hospitals.Find(id);
-            if (hospital != null)
+            if (hospital == null)
             {
-                hospital.IsDeleted = true;
-               await context_new.SaveChangesAsync();
-            }         
+                return;
+            }  
+            bool hasDoctors = await context_new.Doctors
+                .AnyAsync(d => d.HospitalId == id);
+            if (hasDoctors)
+            {
+                throw new InvalidOperationException("Cannot delete hospital with associated doctors.");
+            }
+            hospital.IsDeleted = true;
+            await context_new.SaveChangesAsync();
         }
 
         

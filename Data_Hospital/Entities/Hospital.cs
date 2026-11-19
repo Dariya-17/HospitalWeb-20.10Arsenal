@@ -24,5 +24,7 @@ namespace Data_Hospital.Entities
         public int BedsCount { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool IsDeleted { get; set; }
+
+        public ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
     }
 }

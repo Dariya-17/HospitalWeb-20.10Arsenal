@@ -13,6 +13,7 @@ namespace Data_Hospital.Configurations
     {
         public void Configure(EntityTypeBuilder<DoctorPatient> builder)
         {
+          
             builder.HasKey(dp => new { dp.DoctorId, dp.PatientId });
 
             builder.HasOne(dp => dp.Doctor)

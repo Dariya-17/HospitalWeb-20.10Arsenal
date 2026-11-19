@@ -36,16 +36,16 @@ namespace Data_Hospital.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("HospitalId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -53,8 +53,8 @@ namespace Data_Hospital.Migrations
 
                     b.Property<string>("Specialty")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -185,8 +185,8 @@ namespace Data_Hospital.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -246,13 +246,13 @@ namespace Data_Hospital.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -308,9 +308,9 @@ namespace Data_Hospital.Migrations
             modelBuilder.Entity("Data_Hospital.Entities.Doctor", b =>
                 {
                     b.HasOne("Data_Hospital.Entities.Hospital", "Hospital")
-                        .WithMany()
+                        .WithMany("Doctors")
                         .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Hospital");
@@ -338,6 +338,11 @@ namespace Data_Hospital.Migrations
             modelBuilder.Entity("Data_Hospital.Entities.Doctor", b =>
                 {
                     b.Navigation("Patients");
+                });
+
+            modelBuilder.Entity("Data_Hospital.Entities.Hospital", b =>
+                {
+                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("Data_Hospital.Entities.Patient", b =>
